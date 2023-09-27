@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<ApplicationIcon>Resources\icon.ico</ApplicationIcon>
+		<AssemblyVersion>1.2.0</AssemblyVersion>
+		<Authors>Shibi J M</Authors>
+		<Copyright>© 2018-2023 Shibi J M</Copyright>
+		<DebugType>embedded</DebugType>
+		<FileVersion>1.2.0</FileVersion>
+		<Nullable>enable</Nullable>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<UseWindowsForms>true</UseWindowsForms>
+		<Version>1.2.0</Version>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DebugType>none</DebugType>
+	</PropertyGroup>
+
+</Project>

@@ -1,0 +1,46 @@
+name: Release
+run-name: Release ${{ inputs.version || github.ref_name }}
+on:
+  push:
+    tags:
+      - v*
+  workflow_dispatch:
+    inputs:
+      version:
+        required: true
+        type: string
+        description: Version (vX.X.X)
+jobs:
+  release:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    env:
+      NAME: WatchAlong
+      VERSION: ${{ inputs.version || github.ref_name }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0
+      - name: Build
+        run: dotnet publish WatchAlong.sln -c Release -p:PublishProfile=win-x64
+      - name: Create release ZIP files
+        run: |
+          Copy-Item COPYRIGHT,LICENSE,NOTICE bin/Release/net6.0-windows/publish/win-x64
+          Set-Location bin/Release/net6.0-windows/publish
+          Rename-Item win-x64 $env:NAME
+          Compress-Archive $env:NAME $env:NAME-$env:VERSION-win-x64.zip
+      - name: Delete existing GitHub release, if any
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: gh release delete $env:VERSION --cleanup-tag --yes || true
+      - name: Release on GitHub
+        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844
+        with:
+          tag_name: ${{ env.VERSION }}
+          generate_release_notes: true
+          files: bin/Release/net6.0-windows/publish/*

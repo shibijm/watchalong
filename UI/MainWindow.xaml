@@ -1,0 +1,212 @@
+﻿<Window
+	x:Class="WatchAlong.UI.MainWindow"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	Title="WatchAlong"
+	ResizeMode="CanMinimize"
+	WindowStartupLocation="CenterScreen"
+	FontFamily="Segoe UI"
+	SizeToContent="WidthAndHeight"
+	ContentRendered="Window_ContentRendered"
+	Closing="Window_Closing">
+	<StackPanel
+		Orientation="Horizontal"
+		Margin="15,10,15,10"
+		Visibility="Visible">
+		<StackPanel.Resources>
+			<Style
+				x:Key="Text"
+				TargetType="Control">
+				<Setter
+					Property="VerticalContentAlignment"
+					Value="Center" />
+				<Setter
+					Property="Height"
+					Value="25" />
+			</Style>
+			<Style
+				x:Key="TextInput"
+				TargetType="Control"
+				BasedOn="{StaticResource Text}">
+				<Setter
+					Property="Padding"
+					Value="3,0,3,0" />
+			</Style>
+			<Style
+				TargetType="Label"
+				BasedOn="{StaticResource Text}">
+				<Setter
+					Property="Padding"
+					Value="0,0,0,0" />
+			</Style>
+			<Style
+				TargetType="ComboBox"
+				BasedOn="{StaticResource Text}"></Style>
+			<Style
+				TargetType="TextBox"
+				BasedOn="{StaticResource TextInput}"></Style>
+			<Style
+				TargetType="PasswordBox"
+				BasedOn="{StaticResource TextInput}"></Style>
+		</StackPanel.Resources>
+		<StackPanel
+			Width="240"
+			HorizontalAlignment="Left">
+			<Label
+				Content="Name" />
+			<TextBox
+				x:Name="NameBox"
+				Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+				TextChanged="BoundTextBox_TextChanged" />
+			<Label
+				Content="WebSocket Server Address"
+				Margin="0,10,0,0" />
+			<TextBox
+				x:Name="WSServerAddressBox"
+				Text="{Binding WebSocketServerAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+				TextChanged="BoundTextBox_TextChanged" />
+			<Label
+				Content="Room"
+				Margin="0,10,0,0" />
+			<TextBox
+				x:Name="RoomBox"
+				Text="{Binding Room, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+				TextChanged="BoundTextBox_TextChanged" />
+			<Button
+				x:Name="JoinButton"
+				Content="Join"
+				Margin="0,20,0,0"
+				Width="150"
+				Height="25"
+				Click="JoinButton_Click" />
+			<TabControl
+				Margin="0,20,0,0"
+				SelectionChanged="WsTabs_SelectionChanged"
+				Height="270">
+				<TabItem
+					Header="Users">
+					<ListBox
+						x:Name="UsersListBox"
+						BorderThickness="0,0,0,0"
+						Height="240">
+						<ListBox.ItemTemplate>
+							<DataTemplate>
+								<TextBlock
+									Text="{Binding Text}" />
+							</DataTemplate>
+						</ListBox.ItemTemplate>
+					</ListBox>
+				</TabItem>
+				<TabItem
+					x:Name="LogsTab"
+					Header="Logs">
+					<TextBox
+						x:Name="LogBox"
+						BorderThickness="0,0,0,0"
+						Padding="3,3,3,3"
+						IsReadOnly="True"
+						VerticalContentAlignment="Top"
+						VerticalScrollBarVisibility="Auto"
+						Height="240"
+						TextWrapping="Wrap" />
+				</TabItem>
+			</TabControl>
+		</StackPanel>
+		<Rectangle
+			VerticalAlignment="Stretch"
+			Width="1"
+			Margin="10,0,10,0"
+			Stroke="Black" />
+		<StackPanel
+			Width="320">
+			<Label
+				Content="Media Player" />
+			<ComboBox
+				x:Name="MediaPlayerComboBox"
+				SelectionChanged="MediaPlayerComboBox_SelectionChanged">
+				<ComboBoxItem
+					Content="Jellyfin" />
+				<ComboBoxItem
+					Content="VLC" />
+			</ComboBox>
+			<Label
+				Content="URL"
+				Margin="0,10,0,0" />
+			<TextBox
+				Text="{Binding JellyfinUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+				TextChanged="BoundTextBox_TextChanged"
+				x:Name="JellyfinUrlBox" />
+			<TextBox
+				Text="{Binding VlcUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+				TextChanged="BoundTextBox_TextChanged"
+				x:Name="VlcUrlBox"
+				Visibility="Collapsed" />
+			<Label
+				Content="Username"
+				Margin="0,10,0,0"
+				x:Name="JellyfinUsernameLabel" />
+			<TextBox
+				Text="{Binding JellyfinUsername, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+				TextChanged="BoundTextBox_TextChanged"
+				x:Name="JellyfinUsernameBox" />
+			<Label
+				Content="Token"
+				Margin="0,10,0,0"
+				x:Name="TokenOrPasswordLabel" />
+			<PasswordBox
+				Name="JellyfinTokenBox"
+				PasswordChanged="JellyfinTokenBox_PasswordChanged" />
+			<PasswordBox
+				Name="VlcPasswordBox"
+				PasswordChanged="VlcPasswordBox_PasswordChanged"
+				Visibility="Collapsed" />
+			<Button
+				x:Name="ConnectMediaPlayerButton"
+				Content="Connect"
+				Margin="0,20,0,0"
+				Width="150"
+				Height="25"
+				HorizontalAlignment="Center"
+				Click="ConnectMediaPlayerButton_Click" />
+			<Label
+				Content="Media Player Status:"
+				Margin="0,20,0,0"
+				Height="20"
+				HorizontalAlignment="Center"
+				HorizontalContentAlignment="Center" />
+			<TextBlock
+				Text="Disconnected"
+				x:Name="StatusLabel"
+				TextWrapping="Wrap"
+				TextAlignment="Center" />
+			<CheckBox
+				Content="Enabled"
+				Margin="0,20,0,0"
+				IsChecked="{Binding AutoSync, Mode=TwoWay}"
+				Click="BoundCheckBox_Click" />
+			<CheckBox
+				Content="Join room on startup"
+				IsChecked="{Binding JoinRoomOnStartup, Mode=TwoWay}"
+				Margin="0,10,0,0"
+				Click="BoundCheckBox_Click" />
+			<CheckBox
+				Content="Connect media player on startup"
+				IsChecked="{Binding ConnectMediaPlayerOnStartup, Mode=TwoWay}"
+				Margin="0,10,0,0"
+				Click="BoundCheckBox_Click" />
+			<CheckBox
+				Content="Minimise to system tray when closed"
+				IsChecked="{Binding MinimiseToTray, Mode=TwoWay}"
+				Margin="0,10,0,0"
+				Click="BoundCheckBox_Click" />
+			<!--<Label
+				Content="Position offset in seconds (TBD)"
+				Margin="0,10,0,0" />
+			<TextBox
+				Text="0" />-->
+		</StackPanel>
+	</StackPanel>
+</Window>
