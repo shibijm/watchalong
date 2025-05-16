@@ -8,7 +8,7 @@ public class Config {
 
 	public string Name { get; set; } = "";
 	public string WebSocketServerAddress { get; set; } = "wss://watchalong.shjm.in";
-	public string Room { get; set; } = "";
+	public string Room { get; set; } = "public";
 	public string MediaPlayer { get; set; } = "Jellyfin";
 	public string JellyfinUrl { get; set; } = "http://localhost:8096/jellyfin";
 	public string JellyfinUsername { get; set; } = "";
@@ -35,7 +35,7 @@ public class Config {
 			}
 		}
 	}
-	public bool AutoSync { get; set; } = true;
+	public bool Enabled { get; set; } = true;
 	public bool JoinRoomOnStartup { get; set; } = false;
 	public bool ConnectMediaPlayerOnStartup { get; set; } = false;
 	public bool MinimiseToTray { get; set; } = false;

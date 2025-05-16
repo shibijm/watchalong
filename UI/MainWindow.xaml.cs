@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using WatchAlong.Models;
-using WatchAlong.Services.MediaPlayerControllers;
 using WatchAlong.Services;
+using WatchAlong.Services.MediaPlayerControllers;
 using WatchAlong.Utils;
 
 namespace WatchAlong.UI;
@@ -18,23 +18,21 @@ public partial class MainWindow : Window {
 	private MediaPlayerController? mpc;
 	private WebSocketClient? ws;
 	private bool rendered = false;
-	private readonly ObservableCollection<User> users = new();
+	private readonly ObservableCollection<User> users = [];
 	private readonly List<Control> jellyfinControls;
 	private readonly List<Control> vlcControls;
 	private readonly List<Control> wsControls;
 	private readonly List<Control> mpcControls;
-	private readonly List<string> mediaPlayers = new();
+	private readonly List<string> mediaPlayers = [];
 	private readonly System.Windows.Forms.NotifyIcon notifyIcon = new();
 	private bool reconnecting = false;
 
 	public MainWindow() {
 		InitializeComponent();
-		jellyfinControls = new() { JellyfinUrlBox, JellyfinUsernameLabel, JellyfinUsernameBox, JellyfinTokenBox };
-		vlcControls = new() { VlcUrlBox, VlcPasswordBox };
-		wsControls = new() { NameBox, WSServerAddressBox, RoomBox, JoinButton };
-		mpcControls = new() { MediaPlayerComboBox };
-		mpcControls.AddRange(jellyfinControls);
-		mpcControls.AddRange(vlcControls);
+		jellyfinControls = [JellyfinUrlBox, JellyfinUsernameLabel, JellyfinUsernameBox, JellyfinTokenBox];
+		vlcControls = [VlcUrlBox, VlcPasswordBox];
+		wsControls = [NameBox, WSServerAddressBox, RoomBox, JoinButton];
+		mpcControls = [MediaPlayerComboBox, .. jellyfinControls, .. vlcControls];
 		foreach (ComboBoxItem item in MediaPlayerComboBox.Items) {
 			mediaPlayers.Add((string) item.Content);
 		}
@@ -198,7 +196,7 @@ public partial class MainWindow : Window {
 		}
 	}
 
-	public async Task HandleWsEnvelope(WebSocketEnvelope envelope) {
+	private async Task HandleWsEnvelope(WebSocketEnvelope envelope) {
 		if (ws == null || !ws.IsConnected) {
 			return;
 		}
@@ -238,7 +236,7 @@ public partial class MainWindow : Window {
 							Log("Media player not ready");
 							return;
 						}
-						if (!App.Config.AutoSync) {
+						if (!App.Config.Enabled) {
 							return;
 						}
 						int position = envelope.Data.GetProperty("position").GetInt32();
@@ -265,7 +263,7 @@ public partial class MainWindow : Window {
 		}
 	}
 
-	public async void SendMediaStateUpdateContinuously() {
+	private async void SendMediaStateUpdateContinuously() {
 		while (true) {
 			try {
 				if (ws == null || !ws.IsConnected) {
@@ -309,7 +307,7 @@ public partial class MainWindow : Window {
 	}
 
 	private async void HandleMpcStateChange(string state, int position) {
-		if (ws == null || !ws.IsConnected || !App.Config.AutoSync) {
+		if (ws == null || !ws.IsConnected || !App.Config.Enabled) {
 			return;
 		}
 		string action = state == "PLAYING" ? "PLAY" : "PAUSE";
@@ -327,7 +325,7 @@ public partial class MainWindow : Window {
 
 	private void StartExitProcess(object? sender, EventArgs e) {
 		if (ws != null && ws.IsConnected) {
-			ws.Disconnect().ContinueWith((Task task) => Dispatcher.Invoke(Exit));
+			ws.Disconnect().ContinueWith(task => Dispatcher.Invoke(Exit));
 		} else {
 			Exit();
 		}

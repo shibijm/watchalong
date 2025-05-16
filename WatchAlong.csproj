@@ -1,21 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<ApplicationIcon>Resources\icon.ico</ApplicationIcon>
-		<AssemblyVersion>1.2.0</AssemblyVersion>
-		<Authors>Shibi J M</Authors>
-		<Copyright>© 2018-2023 Shibi J M</Copyright>
-		<DebugType>embedded</DebugType>
-		<FileVersion>1.2.0</FileVersion>
-		<Nullable>enable</Nullable>
+		<TargetFramework>net9.0-windows</TargetFramework>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net6.0-windows</TargetFramework>
-		<UseWPF>true</UseWPF>
-		<UseWindowsForms>true</UseWindowsForms>
+		<DebugType>embedded</DebugType>
+		<ApplicationIcon>assets\icon.ico</ApplicationIcon>
+		<Authors>Shibi J M</Authors>
+		<Copyright>© 2018-2025 $(Authors)</Copyright>
 		<Version>1.2.0</Version>
+		<FileVersion>$(Version)</FileVersion>
+		<AssemblyVersion>$(Version)</AssemblyVersion>
+		<UseWindowsForms>true</UseWindowsForms>
+		<UseWPF>true</UseWPF>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	<PropertyGroup>
+		<PublishSingleFile>true</PublishSingleFile>
+		<SelfContained>false</SelfContained>
+		<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
 		<DebugType>none</DebugType>
 	</PropertyGroup>
 

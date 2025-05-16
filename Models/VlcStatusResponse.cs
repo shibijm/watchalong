@@ -5,7 +5,7 @@ namespace WatchAlong.Models;
 public class VlcStatusResponse {
 
 	[JsonPropertyName("state")]
-	public string State { get; set; }
+	public required string State { get; set; }
 
 	[JsonPropertyName("time")]
 	public int Time { get; set; }

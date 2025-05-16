@@ -185,7 +185,7 @@
 			<CheckBox
 				Content="Enabled"
 				Margin="0,20,0,0"
-				IsChecked="{Binding AutoSync, Mode=TwoWay}"
+				IsChecked="{Binding Enabled, Mode=TwoWay}"
 				Click="BoundCheckBox_Click" />
 			<CheckBox
 				Content="Join room on startup"

@@ -68,7 +68,7 @@ public class WebSocketClient {
 		);
 	}
 
-	public async Task<WebSocketEnvelope?> Receive() {
+	private async Task<WebSocketEnvelope?> Receive() {
 		ArraySegment<byte> envelopeBytes = new(new byte[1024]);
 		WebSocketReceiveResult receiveResult = await ws.ReceiveAsync(envelopeBytes, CancellationToken.None);
 		if (ws.State == WebSocketState.CloseReceived) {

@@ -13,7 +13,6 @@ public abstract class MediaPlayerController {
 	protected readonly SemaphoreSlim semaphoreLock = new(1, 1);
 	protected bool shouldPoll = false;
 	protected bool firstStateUpdate = true;
-
 	protected readonly int seekThreshold = 4;
 
 	public abstract Task StartPolling(Action<string> statusCallback, Action<string, int> stateCallback);

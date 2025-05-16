@@ -9,7 +9,7 @@ using WatchAlong.Utils;
 
 namespace WatchAlong.Services.MediaPlayerControllers;
 
-public class JellyfinController : MediaPlayerController {
+public class JellyfinController(string url, string token, string username) : MediaPlayerController {
 
 	private string StateI {
 		get => stateInternal;
@@ -26,18 +26,12 @@ public class JellyfinController : MediaPlayerController {
 		}
 	}
 
-	private readonly string url;
-	private readonly string token;
-	private readonly string username;
+	private readonly string url = url;
+	private readonly string token = token;
+	private readonly string username = username;
 	private string recentSessionId = "";
 	private string stateInternal = "NOT_CONNECTED";
 	private int positionInternal = 0;
-
-	public JellyfinController(string url, string token, string username) {
-		this.url = url;
-		this.token = token;
-		this.username = username;
-	}
 
 	public override async Task StartPolling(Action<string> statusCallback, Action<string, int> stateCallback) {
 		statusCallback("Connecting");
@@ -53,8 +47,14 @@ public class JellyfinController : MediaPlayerController {
 					continue;
 				}
 				string response = await responseMessage.Content.ReadAsStringAsync();
-				List<JellyfinSession>? sessions = JsonSerializer.Deserialize<List<JellyfinSession>>(response);
-				sessions = sessions.Where(session => session.UserName == username).ToList();
+				List<JellyfinSession> sessions = JsonSerializer.Deserialize<List<JellyfinSession>>(response)!;
+				if (sessions == null) {
+					StateI = "NOT_CONNECTED";
+					PositionI = 0;
+					statusCallback("Deserialisation failed");
+					continue;
+				}
+				sessions = [.. sessions.Where(session => session.UserName == username)];
 				if (sessions.Count == 0) {
 					StateI = "NOT_CONNECTED";
 					PositionI = 0;

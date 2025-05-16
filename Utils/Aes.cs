@@ -7,7 +7,7 @@ namespace WatchAlong.Utils;
 public static class Aes {
 
 	private static readonly System.Security.Cryptography.Aes aes;
-	private static readonly byte[] key = new byte[] { 191, 209, 30, 99, 7, 238, 55, 211, 7, 233, 147, 30, 17, 47, 94, 166, 125, 232, 15, 211, 48, 143, 138, 21, 43, 226, 30, 71, 123, 103, 10, 162 };
+	private static readonly byte[] key = [191, 209, 30, 99, 7, 238, 55, 211, 7, 233, 147, 30, 17, 47, 94, 166, 125, 232, 15, 211, 48, 143, 138, 21, 43, 226, 30, 71, 123, 103, 10, 162];
 
 	static Aes() {
 		aes = System.Security.Cryptography.Aes.Create();

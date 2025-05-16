@@ -9,14 +9,16 @@ public class ConfigService {
 
 	public Config Config { get; }
 
+	private readonly JsonSerializerOptions jsonSerializerOptions;
 	private readonly string configFilePath;
 
 	public ConfigService(string configFilePath) {
+		jsonSerializerOptions = new JsonSerializerOptions() { WriteIndented = true };
 		this.configFilePath = configFilePath;
 		if (File.Exists(configFilePath)) {
 			try {
 				string text = File.ReadAllText(configFilePath);
-				Config = JsonSerializer.Deserialize<Config>(text);
+				Config = JsonSerializer.Deserialize<Config>(text)!;
 				if (Config == null) {
 					throw new Exception("Config file deserialised to null");
 				}
@@ -34,7 +36,7 @@ public class ConfigService {
 		try {
 			File.WriteAllText(configFilePath, "");
 			using FileStream fileStream = File.OpenWrite(configFilePath);
-			JsonSerializer.Serialize(fileStream, Config, new JsonSerializerOptions() { WriteIndented = true });
+			JsonSerializer.Serialize(fileStream, Config, jsonSerializerOptions);
 		} catch (Exception e) {
 			App.Log(e.ToString());
 			App.DisplayError("Failed to write to the application's config file.");

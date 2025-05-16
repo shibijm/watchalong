@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.0.31903.59
+VisualStudioVersion = 17.13.35931.197 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WatchAlong", "WatchAlong.csproj", "{9A7BC85A-F20B-4871-B59F-2AF3367EFF91}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatchAlong", "WatchAlong.csproj", "{DE4EF385-4403-167E-1131-88B39CF9DAEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9A7BC85A-F20B-4871-B59F-2AF3367EFF91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9A7BC85A-F20B-4871-B59F-2AF3367EFF91}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9A7BC85A-F20B-4871-B59F-2AF3367EFF91}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9A7BC85A-F20B-4871-B59F-2AF3367EFF91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE4EF385-4403-167E-1131-88B39CF9DAEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE4EF385-4403-167E-1131-88B39CF9DAEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE4EF385-4403-167E-1131-88B39CF9DAEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE4EF385-4403-167E-1131-88B39CF9DAEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {070E155C-7162-4BBB-B425-12561F7B98EF}
+		SolutionGuid = {39A307A7-96A2-479C-848D-EAC9D2247C6F}
 	EndGlobalSection
 EndGlobal

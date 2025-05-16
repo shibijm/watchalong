@@ -7,15 +7,10 @@ using WatchAlong.Utils;
 
 namespace WatchAlong.Services.MediaPlayerControllers;
 
-public class VlcController : MediaPlayerController {
+public class VlcController(string url, string password) : MediaPlayerController {
 
-	private readonly string url;
-	private readonly string password;
-
-	public VlcController(string url, string password) {
-		this.url = url;
-		this.password = password;
-	}
+	private readonly string url = url;
+	private readonly string password = password;
 
 	public override async Task StartPolling(Action<string> statusCallback, Action<string, int> stateCallback) {
 		statusCallback("Connecting");
@@ -31,7 +26,13 @@ public class VlcController : MediaPlayerController {
 					continue;
 				}
 				string response = await responseMessage.Content.ReadAsStringAsync();
-				VlcStatusResponse? statusResponse = JsonSerializer.Deserialize<VlcStatusResponse>(response);
+				VlcStatusResponse statusResponse = JsonSerializer.Deserialize<VlcStatusResponse>(response)!;
+				if (statusResponse == null) {
+					State = "NOT_CONNECTED";
+					Position = 0;
+					statusCallback("Deserialisation failed");
+					continue;
+				}
 				if (statusResponse.State == "stopped") {
 					State = "STOPPED";
 					Position = 0;
